@@ -1,56 +1,72 @@
-#include<iostream>
-#include<cmath>
-#include<string>
-#include <cstring>
+#include <iostream>
+#include <cmath>
 #include <ctime>
+#include <random>
 #include "backEnd.h"
 
 using namespace std;
-
-backEnd::backEnd()
-{
-
-}
-
-int backEnd::gcd(int p, int q)
-{
-	int temp = 0;
-
-	while (p != 0)
-	{
-		temp = p % q;
-
-		if (temp == 0)
-			return q;
-		p = q;
-		q = temp;
-	}
-	return -1;
-}
 
 int backEnd::genRand()
 {
 	srand(time(NULL));
 	int num = 0;
 
-	while (num == 0 || isPrime(num) == false) {
+	do {
 		num = rand() & 100;
-	}
+	} while (isPrime(num, 3) == false);
 
 	return num;
 };
 
+int backEnd::EuclidGCD(int a, int b) {
+	if (b == 0)
+		return a;
+	return EuclidGCD(b, a % b);
+}
 
-bool backEnd::isPrime(int num)
+int backEnd::power(int a, unsigned int n, int p)
 {
-	bool flag = true;
-	for (int i = 2; i <= num / 2; i++) {
-		if (num % i == 0) {
-			flag = false;
-			break;
-		}
+	int res = 1;      // Initialize result
+	a = a % p;  // Update 'a' if 'a' >= p
+
+	while (n > 0)
+	{
+		// If n is odd, multiply 'a' with result
+		if (n & 1)
+			res = (res * a) % p;
+
+		// n must be even now
+		n = n >> 1; // n = n/2
+		a = (a * a) % p;
 	}
-	return flag;
+	return res;
+}
+
+bool backEnd::isPrime(unsigned int n, int k)
+{
+	// Corner cases
+	if (n <= 1 || n == 4)  return false;
+	if (n <= 3) return true;
+
+	// Try k times
+	while (k > 0)
+	{
+		// Pick a random number in [2..n-2]        
+		// Above corner cases make sure that n > 4
+		int a = 2 + rand() % (n - 4);
+
+		// Checking if a and n are co-prime
+		if (EuclidGCD(n, a) != 1)
+			return false;
+
+		// Fermat's little theorem
+		if (power(a, n - 1, n) != 1)
+			return false;
+
+		k--;
+	}
+
+	return true;
 }
 
 string backEnd::encrypt(string m, int e, int n)
