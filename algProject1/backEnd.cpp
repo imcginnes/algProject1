@@ -2,98 +2,66 @@
 #include <cmath>
 #include <ctime>
 #include <random>
+#include "backEnd.h"
 
 using namespace std;
 
-int genRand()
+int backEnd::genRand()
 {
 	srand(time(NULL));
 	int num = 0;
 
-	do {
+	while (num == 0 || isPrime(num) == false) {
 		num = rand() & 100;
-	} while (num != 1);              //isPrime(num) == false);
+	}
 
 	return num;
-}
+};
 
 
-bool isPrime(int num)
+bool backEnd::isPrime(int num)
 {
-	int i = 0;
-	bool prime = true;
-	
-	if (num == 0 || num == 1) {
-		prime = false;
-	}
-	else {
-		for (i = 2; i <= num / 2; ++i) {
-			if (num % i == 0) {
-				prime = false;
-				break;
-			}
+	bool flag = true;
+	for (int i = 2; i <= num / 2; i++) {
+		if (num % i == 0) {
+			flag = false;
+			break;
 		}
 	}
-
-	return prime;
+	return flag;
 }
 
-/*
-double gcd(double num1, double num2)
+string backEnd::sign(int d, int n1, string msg)
 {
-	
-	Returns the Greatest Common Divisor (GCD) of two given numbers.
+	int n = msg.length();
+	int x = 0;
+	int y = 0;
 
-
-
-	if (num1 == 0 && num2 == 0)
+	for (int i = 0; i < n; i++)
 	{
-		return 0;
+		x = pow(d, n);
+		y = x % msg[i];
+
+		msg[i] = int(msg[i]);
+		msg[i] = y;
 	}
 
-	if (num1 == 0)
-	{
-		return num2;
-	}
+	string sMsg = msg;
 
-	if (num2 == 0)
-	{
-		return num1;
-	}
-	double remainder = 0;
-
-	do
-	{
-		remainder = num1 % num2;
-		num1 = num2;
-		num2 = remainder;
-
-	} while (remainder != 0);
-
-	return num1;
+	return sMsg;
 }
 
-void keygen(double& e_key, double& d_key, double phival)
+string backEnd::verify(string sMsg, int n, int e, string msg)
 {
-	//Code to find the encryption key.
+	int x, y = 0;
 
-	e_key = genrndnum(2, (phival));
-
-	while (gcd(e_key, phival) != 1)
+	for (int i = 0; i < n; i++)
 	{
-		e_key = genrndnum(2, (phival - 1));
+		x = pow(sMsg[i], e);
+		y = x % n;
+
+		sMsg[i] = int(msg[i]);
+		sMsg[i] = y;
 	}
-
-	//Code to find decryption key.
-
-	double k = 0;
-	d_key = (1 + (k * phival)) / e_key;
-
-	while (((1 + (k * phival)) % e_key) != 0)
-	{
-		++k;
-		d_key = (1 + (k * phival)) / e_key;
-	}
-
-	return;
-}*/
+	return sMsg;
+}
