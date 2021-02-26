@@ -1,10 +1,32 @@
-#include <iostream>
-#include <cmath>
+#include<iostream>
+#include<cmath>
+#include<string>
+#include <cstring>
 #include <ctime>
-#include <random>
 #include "backEnd.h"
 
 using namespace std;
+
+backEnd::backEnd()
+{
+
+}
+
+int backEnd::gcd(int p, int q)
+{
+	int temp = 0;
+
+	while (p != 0)
+	{
+		temp = p % q;
+
+		if (temp == 0)
+			return q;
+		p = q;
+		q = temp;
+	}
+	return -1;
+}
 
 int backEnd::genRand()
 {
@@ -31,36 +53,81 @@ bool backEnd::isPrime(int num)
 	return flag;
 }
 
-string backEnd::sign(int d, int n1, string msg)
+string backEnd::encrypt(string m, int e, int n)
 {
-	int n = msg.length();
+	string c = "empty ";
+
+	int s = m.length();
 	int x = 0;
 	int y = 0;
 
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < s; i++)
 	{
+		m[i] = int(m[i]);
+
+		x = pow(m[i], e);
+		y = x % n;
+
+		m[i] = y;
+	}
+	c = m;
+	return c;
+}
+
+string backEnd::decrypt(string c, int n, int d)
+{
+	string m = "empty ";
+
+	int s = c.length();
+	int x = 0;
+	int y = 0;
+
+	for (int i = 0; i < s; i++)
+	{
+		c[i] = int(c[i]);
+
+		x = pow(c[i], d);
+		y = x % n;
+
+		c[i] = y;
+	}
+
+	return m;
+}
+
+string backEnd::sign(int d, int n, string msg)
+{
+	int s = msg.length();
+	int x = 0;
+	int y = 0;
+
+	for (int i = 0; i < s; i++)
+	{
+		msg[i] = int(msg[i]);
+
 		x = pow(d, n);
 		y = x % msg[i];
 
-		msg[i] = int(msg[i]);
 		msg[i] = y;
 	}
 
 	string sMsg = msg;
-
 	return sMsg;
 }
 
-string backEnd::verify(string sMsg, int n, int e, string msg)
+string backEnd::verifySig(string sMsg, int n, int e, string msg)
 {
-	int x, y = 0;
+	int s = msg.length();
+	int x = 0;
+	int y = 0;
 
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < s; i++)
 	{
+		sMsg[i] = int(msg[i]);
+
 		x = pow(sMsg[i], e);
 		y = x % n;
 
-		sMsg[i] = int(msg[i]);
 		sMsg[i] = y;
 	}
 	return sMsg;

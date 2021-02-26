@@ -1,7 +1,10 @@
-#include <iostream>
-#include <cmath>
+#include<iostream>
+#include<cmath>
+#include<string>
+#include <cstring>
 #include <ctime>
 #include "backEnd.h"
+
 
 using namespace std;
 
@@ -24,7 +27,7 @@ int main()
 
 	//calculates n & e
 	n = p * q;
-	e = (p - 1)*(q - 1);
+	e = (p - 1) * (q - 1);
 
 	// tells user the stuff
 	cout << "p: " << p << "\nq: " << q << "\nn: " << n << "\ne: " << e;
