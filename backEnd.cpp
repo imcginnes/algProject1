@@ -1,78 +1,154 @@
 #include <iostream>
 #include <cmath>
 #include <ctime>
+#include <random>
+#include "backEnd.h"
+#include <conio.h>
+#include <windows.h>
 
+HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); // For use of SetConsoleTextAttribute()
 using namespace std;
 
-long long int gcd(long long int num1, long long int num2)
-{
-	/*
-
-	Returns the Greatest Common Divisor (GCD) of two given numbers.
-
-*/
-
-
-	if (num1 == 0 && num2 == 0)
-	{
-		return 0;
-	}
-
-	if (num1 == 0)
-	{
-		return num2;
-	}
-
-	if (num2 == 0)
-	{
-		return num1;
-	}
-	long long int remainder = 0;
-
-	do
-	{
-		remainder = num1 % num2;
-		num1 = num2;
-		num2 = remainder;
-
-	} while (remainder != 0);
-
-	return num1;
-}
-
-
-long genrndnum(long lower_limit, long upper_limit)
+int backEnd::genRand()
 {
 	srand(time(NULL));
-	long rdnum = 0;
+	int primes[20] = { 24091, 26951, 17851, 15137, 38609, 32003, 43399, 46549, 58379, 58871, 62207, 67139, 75967, 74717, 80863, 84089, 92557, 94447, 70753, 45827 };
+	int num = 0;
+	int i = 0;
 
-	rdnum = lower_limit + (rand() % (int)(upper_limit - lower_limit + 1));
+	i = rand() % 20;
+	num = primes[i];
 
-	return rdnum;
+	return num;
+};
+
+int backEnd::EuclidGCD(int a, int b) {
+	if (b == 0)
+		return a;
+	return EuclidGCD(b, a % b);
+}
+
+int backEnd::power(int a, unsigned int n, int p)
+{
+	int res = 1;
+	a = a % p;
+
+	while (n > 0)
+	{
+		if (n & 1)
+			res = (res * a) % p;
+
+		n = n >> 1;
+		a = (a * a) % p;
+	}
+	return res;
 }
 
 
-void keygen(long long int& e_key, long long int& d_key, long long int phival)
+// encrypts the message
+string backEnd::encrypt(string m, int e, int n)
 {
-	//Code to find the encryption key.
+	string c = "empty ";
 
-	e_key = genrndnum(2, (phival));
+	int s = m.length();
+	int x = 0;
+	int y = 0;
 
-	while (gcd(e_key, phival) != 1)
+	for (int i = 0; i < s; i++)
 	{
-		e_key = genrndnum(2, (phival - 1));
+		m[i] = int(m[i]);
+
+		x = pow(m[i], e);
+		y = x % n;
+
+		m[i] = y;
+	}
+	c = m;
+	return c;
+}
+
+
+// decrypts the message
+string backEnd::decrypt(string c, int n, int d)
+{
+	string m = "empty ";
+
+	int s = c.length();
+	int x = 0;
+	int y = 0;
+
+	for (int i = 0; i < s; i++)
+	{
+		c[i] = int(c[i]);
+
+		x = pow(c[i], d);
+		y = x % n;
+
+		c[i] = y;
 	}
 
-	//Code to find decryption key.
+	return m;
+}
 
-	long long int k = 0;
-	d_key = (1 + (k * phival)) / e_key;
+string backEnd::sign(int d, int n, string msg)
+{
+	int s = msg.length();
+	int x = 0;
+	int y = 0;
 
-	while (((1 + (k * phival)) % e_key) != 0)
+	for (int i = 0; i < s; i++)
 	{
-		++k;
-		d_key = (1 + (k * phival)) / e_key;
+		msg[i] = int(msg[i]);
+
+		x = pow(d, n);
+		y = x % msg[i];
+
+		msg[i] = y;
 	}
 
-	return;
+	string sMsg = msg;
+	return sMsg;
+}
+
+string backEnd::verifySig(string sMsg, int n, int e, string msg)
+{
+	int s = msg.length();
+	int x = 0;
+	int y = 0;
+
+	for (int i = 0; i < s; i++)
+	{
+		sMsg[i] = int(msg[i]);
+
+		x = pow(sMsg[i], e);
+		y = x % n;
+
+		sMsg[i] = y;
+	}
+	return sMsg;
+}
+
+// got this GUI ex online, changed it up a bit
+void backEnd::GUI()
+{
+	int len = 0, x, y;
+	time_t t;
+	srand((unsigned)time(&t));
+
+	cout << endl << "   ";
+	for (x = 0; x < 6; x++)
+	{
+		for (y = 0; y < 114; y++)
+		{
+			SetConsoleTextAttribute(console, (rand() % 16) * 15);
+			cout << " ";
+		}
+		SetConsoleTextAttribute(console, 0);
+		cout << endl << "   ";
+	}
+	SetConsoleTextAttribute(console, 15);
+
+	cout << "\n\t\t\t\t\t\t\tALGORITHMS\n";
+	cout << "\t\t\t\t\t\t\t PROJECT 1\n";
+	cout << "\t\t\t\t\t\t     Braeden, Josh, Ian";
 }
