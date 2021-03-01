@@ -7,6 +7,7 @@ using namespace std;
 class backEnd
 {
 public:
+	void GUI();
 	int genRand();
 	int EuclidGCD(int a, int b);
 	int power(int a, unsigned int n, int p);

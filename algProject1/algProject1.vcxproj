@@ -140,7 +140,6 @@
   <ItemGroup>
     <ClCompile Include="backEnd.cpp" />
     <ClCompile Include="frontEnd.cpp" />
-    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backEnd.h" />

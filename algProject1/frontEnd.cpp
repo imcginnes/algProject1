@@ -1,3 +1,4 @@
+#include <conio.h>
 #include <iostream>
 #include <cmath>
 #include <ctime>
@@ -7,42 +8,63 @@ using namespace std;
 
 int main()
 {
-
 	// variables
 	double p, q, n, e, t, count;
-	double message;
-	backEnd obj1, obj2;
+	string message;
+	string prompt1;
+	backEnd backEnd;
+	string c1;
 
+	// GUI call
+	backEnd.GUI();
+
+	/*
+	// asks user if he/she is general public user, then validates
+	cout << "\n\n   Are you a general public user, or do you own the keys? (Y/N): ";
+	cin >> prompt1;
+
+	if (prompt1 == "Y" || "y")
+		cout << "   yes";
+	else
+		cout << "   no";*/
+
+	p = backEnd.genRand();
 	// prompts user for message to encrypt
-	cout << "Enter the message you want to encrypt (integer): ";
+	cout << "\n\n   Enter the message you want to encrypt (integer): ";
 	cin >> message;
+	q = backEnd.genRand();
 
 	// generates prime number p & q
-	//p = obj1.genRand();
-	//q = obj2.genRand();
+	//p = backEnd.genRand();
+	//q = backEnd.genRand();
+	p = 3;
+	q = 11;
 
-	// genRand is broke so settled on these
-	p = 19;
-	q = 37;
-
-	//calculates n & q
+	// calculates n, t, & e
 	n = p * q;
 	t = (p - 1)*(q - 1);
-	e = 4;
+	e = 1;
+	e = backEnd.EuclidGCD(e, n);
 
-	obj1.EuclidGCD(e, t);
+	// encrypt message
+	string c = backEnd.encrypt(message, e, n);
+	cout << c1;
 
-	double d;
+	// decypt message
 	double k2 = 2;
-
-	d = (1 + (k2 * t)) / e;
-	double c = pow(message, e);
-	double decryptedMessage = pow(c, d);
-	c = fmod(c, n);
-	decryptedMessage = fmod(decryptedMessage, n);
+	double d = (1 + (k2 * t)) / e;
+	string decryptedMessage = backEnd.decrypt(c, n, d);
 
 	// tells user the stuff
-	cout << "\nMessage: " << message << "\np: " << p << "\nq: " << q << "\nn: " << n << "\nt: " << t << "\ne: " << e << "\nd: " << d << "\nc: " << c << "\nMessage: " << decryptedMessage << endl;
+	cout << "\n   Message: " << message;
+	cout << "\n   p: " << p;
+	cout << "\n   q: " << q;
+	cout << "\n   n: " << n;
+	cout << "\n   t: " << t;
+	cout << "\n   e: " << e;
+	cout << "\n   d: " << d;
+	cout << "\n   c: " << c1;
+	cout << "\n   Message: " << decryptedMessage << endl;
 
 	return 0;
 }

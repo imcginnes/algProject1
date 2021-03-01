@@ -3,17 +3,24 @@
 #include <ctime>
 #include <random>
 #include "backEnd.h"
+#include <conio.h>
+#include <windows.h>
 
+HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); // For use of SetConsoleTextAttribute()
 using namespace std;
 
 int backEnd::genRand()
 {
+	//time_t t;
+	//srand((unsigned)time(&t)); // randomize using the time
 	srand(time(NULL));
-	int num = 0;
+	int temp, num;
 
-	do {
-		num = rand() & 100;
-	} while (isPrime(num, 3) == false);
+	num = rand() & 16;
+
+	int Primes[] = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53};
+
+	//num = Primes[temp];
 
 	return num;
 };
@@ -26,49 +33,22 @@ int backEnd::EuclidGCD(int a, int b) {
 
 int backEnd::power(int a, unsigned int n, int p)
 {
-	int res = 1;      // Initialize result
-	a = a % p;  // Update 'a' if 'a' >= p
+	int res = 1;
+	a = a % p;
 
 	while (n > 0)
 	{
-		// If n is odd, multiply 'a' with result
 		if (n & 1)
 			res = (res * a) % p;
 
-		// n must be even now
-		n = n >> 1; // n = n/2
+		n = n >> 1;
 		a = (a * a) % p;
 	}
 	return res;
 }
 
-bool backEnd::isPrime(unsigned int n, int k)
-{
-	// Corner cases
-	if (n <= 1 || n == 4)  return false;
-	if (n <= 3) return true;
 
-	// Try k times
-	while (k > 0)
-	{
-		// Pick a random number in [2..n-2]        
-		// Above corner cases make sure that n > 4
-		int a = 2 + rand() % (n - 4);
-
-		// Checking if a and n are co-prime
-		if (EuclidGCD(n, a) != 1)
-			return false;
-
-		// Fermat's little theorem
-		if (power(a, n - 1, n) != 1)
-			return false;
-
-		k--;
-	}
-
-	return true;
-}
-
+// encrypts the message
 string backEnd::encrypt(string m, int e, int n)
 {
 	string c = "empty ";
@@ -90,6 +70,8 @@ string backEnd::encrypt(string m, int e, int n)
 	return c;
 }
 
+
+// decrypts the message
 string backEnd::decrypt(string c, int n, int d)
 {
 	string m = "empty ";
@@ -147,4 +129,29 @@ string backEnd::verifySig(string sMsg, int n, int e, string msg)
 		sMsg[i] = y;
 	}
 	return sMsg;
+}
+
+// got this GUI ex online, changed it up a bit
+void backEnd::GUI()
+{
+	int len = 0, x, y;
+	time_t t;
+	srand((unsigned)time(&t));
+
+	cout << endl << "   ";
+	for (x = 0; x < 6; x++)
+	{
+		for (y = 0; y < 114; y++)
+		{
+			SetConsoleTextAttribute(console, (rand() % 16) * 15);
+			cout << " ";
+		}
+		SetConsoleTextAttribute(console, 0);
+		cout << endl << "   ";
+	}
+	SetConsoleTextAttribute(console, 15);
+
+	cout << "\n\t\t\t\t\t\t\tALGORITHMS\n";
+	cout << "\t\t\t\t\t\t\t PROJECT 1\n";
+	cout << "\t\t\t\t\t\t     Braeden, Josh, Ian";
 }
