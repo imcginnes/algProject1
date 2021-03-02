@@ -11,7 +11,7 @@ using namespace std;
 int main()
 {
 	// variables
-	double p, q, n, e, t, count;
+	int p, q, n, e, t, count;
 	string message;
 	string prompt1;
 	backEnd backEnd;
@@ -44,7 +44,7 @@ int main()
 
 	// encrypt message
 	string c = backEnd.encrypt(message, e, n);
-	cout << c1;
+	cout << c;
 
 	// decypt message
 	double k2 = 2;
