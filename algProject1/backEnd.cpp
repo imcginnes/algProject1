@@ -6,21 +6,20 @@
 #include <conio.h>
 #include <windows.h>
 
-HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); // For use of SetConsoleTextAttribute()
+HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 using namespace std;
 
+// generates random prime number
 int backEnd::genRand()
 {
-	//time_t t;
-	//srand((unsigned)time(&t)); // randomize using the time
 	srand(time(NULL));
-	int temp, num;
+	int smallPrimes[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53};
+	int bigPrimes[20] = {24091, 26951, 17851, 15137, 38609, 32003, 43399, 46549, 58379, 58871, 62207, 67139, 75967, 74717, 80863, 84089, 92557, 94447, 70753, 45827 };
+	int num = 0;
+	int i = 0;
 
-	num = rand() & 16;
-
-	int Primes[] = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53};
-
-	//num = Primes[temp];
+	i = rand() % 20;
+	num = bigPrimes[i];
 
 	return num;
 };
@@ -67,7 +66,7 @@ string backEnd::encrypt(string m, int e, int n)
 		m[i] = y;
 	}
 	c = m;
-	return c;
+	return m;
 }
 
 
@@ -90,7 +89,7 @@ string backEnd::decrypt(string c, int n, int d)
 		c[i] = y;
 	}
 
-	return m;
+	return c;
 }
 
 string backEnd::sign(int d, int n, string msg)
