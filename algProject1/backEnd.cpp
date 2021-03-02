@@ -24,12 +24,14 @@ int backEnd::genRand()
 	return num;
 };
 
+// Euclids GCD
 int backEnd::EuclidGCD(int a, int b) {
 	if (b == 0)
 		return a;
 	return EuclidGCD(b, a % b);
 }
 
+// power algorithm
 int backEnd::power(int a, unsigned int n, int p)
 {
 	int res = 1;
@@ -45,7 +47,6 @@ int backEnd::power(int a, unsigned int n, int p)
 	}
 	return res;
 }
-
 
 // encrypts the message
 string backEnd::encrypt(string m, int e, int n)
@@ -69,7 +70,6 @@ string backEnd::encrypt(string m, int e, int n)
 	return m;
 }
 
-
 // decrypts the message
 string backEnd::decrypt(string c, int n, int d)
 {
@@ -92,6 +92,7 @@ string backEnd::decrypt(string c, int n, int d)
 	return c;
 }
 
+// 
 string backEnd::sign(int d, int n, string msg)
 {
 	int s = msg.length();
@@ -112,6 +113,7 @@ string backEnd::sign(int d, int n, string msg)
 	return sMsg;
 }
 
+// verify's the signature
 string backEnd::verifySig(string sMsg, int n, int e, string msg)
 {
 	int s = msg.length();
